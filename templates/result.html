@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #d9e6ff, #f5faff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 400px;
+            animation: fadein 0.6s ease;
+        }
+
+        @keyframes fadein {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #2a4c89;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 18px;
+            background: #4267b2;
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            background: #2e59a8;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>{{ message }}</h1>
+    <a href="/">Back</a>
+</div>
+
+</body>
+</html>

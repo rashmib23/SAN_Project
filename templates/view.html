@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View File</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #f2f4f8;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .top-bar {
+            padding: 12px 20px;
+            background: #4267b2;
+            color: white;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            background: #2e89ff;
+            padding: 8px 16px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #0066cc;
+        }
+
+        .logout-btn {
+            background: #ff4d4d;
+            padding: 8px 16px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #cc0000;
+        }
+
+        iframe {
+            width: 100vw;
+            height: calc(100vh - 60px);
+            border: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <div class="top-left">
+            <a href="/" class="back-btn">← Back</a>
+            <div>Viewing: <b>{{ filename }}</b></div>
+        </div>
+
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <iframe src="/cached/{{ filename }}"></iframe>
+
+</body>
+</html>

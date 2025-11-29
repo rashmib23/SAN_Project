@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Intelligent SAN Demo</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #d9e6ff, #f5faff);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            width: 100%;
+            background: #4267b2;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            font-size: 17px;
+        }
+
+        .logout-btn {
+            background: #ff4d4d;
+            padding: 8px 16px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #cc0000;
+        }
+
+        .container {
+            width: 450px;
+            margin: 40px auto;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2a4c89;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            color: #1e3c72;
+            font-size: 20px;
+            border-left: 4px solid #4267b2;
+            padding-left: 10px;
+            margin-top: 30px;
+        }
+
+        select, input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            margin-bottom: 18px;
+            border: 1px solid #b0c4de;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #4267b2;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background: #2e59a8;
+            transform: translateY(-2px);
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div>Logged in as: <b>{{ session['user'] }}</b> ({{ session['role'] }})</div>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="container">
+        <h1>Intelligent SAN Demo</h1>
+
+        <!-- Upload -->
+        <h2>Upload File</h2>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit" name="action" value="upload">Upload & Encode</button>
+        </form>
+
+        <!-- Retrieve -->
+        <h2>Retrieve File</h2>
+        <form method="post">
+            <select name="filename" required>
+                {% for file in files %}
+                <option value="{{ file }}">{{ file }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" name="action" value="request">Retrieve & View</button>
+        </form>
+    </div>
+
+</body>
+</html>
