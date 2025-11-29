@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Intelligent SAN Demo</title>
+    <title>Intelligent SAN</title>
 
     <style>
         body {
@@ -100,7 +100,7 @@
     </div>
 
     <div class="container">
-        <h1>Intelligent SAN Demo</h1>
+        <h1>Intelligent SAN</h1>
 
         <!-- Upload -->
         <h2>Upload File</h2>
@@ -109,17 +109,78 @@
             <button type="submit" name="action" value="upload">Upload & Encode</button>
         </form>
 
-        <!-- Retrieve -->
-        <h2>Retrieve File</h2>
-        <form method="post">
-            <select name="filename" required>
-                {% for file in files %}
-                <option value="{{ file }}">{{ file }}</option>
-                {% endfor %}
-            </select>
+        <h2>Request File</h2>
 
-            <button type="submit" name="action" value="request">Retrieve & View</button>
-        </form>
+        <!-- Manual Search Box -->
+        <label>Search file:</label>
+        <input type="text" id="manual-filename" placeholder="Type filename..." onkeyup="liveSearch()">
+
+        <div id="suggestions" 
+            style="border:1px solid #ccc; display:none; max-width:300px; background:white; position:absolute; z-index:10;"></div>
+
+        <br><br>
+
+        <!-- OR choose from dropdown -->
+        <label>Or choose from list:</label>
+        <select id="filename-select">
+            {% for file in files %}
+            <option value="{{ file }}">{{ file }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <button type="button" onclick="requestFile()">Retrieve File</button>
+
+        <script>
+        function liveSearch() {
+            let query = document.getElementById("manual-filename").value;
+
+            if (query.length === 0) {
+                document.getElementById("suggestions").style.display = "none";
+                return;
+            }
+
+            fetch(`/search_files?q=${query}`)
+                .then(res => res.json())
+                .then(data => {
+                    let suggestionBox = document.getElementById("suggestions");
+                    suggestionBox.innerHTML = "";
+
+                    if (data.results.length === 0) {
+                        suggestionBox.style.display = "none";
+                        return;
+                    }
+
+                    data.results.forEach(file => {
+                        let div = document.createElement("div");
+                        div.style.padding = "5px";
+                        div.style.cursor = "pointer";
+                        div.innerText = file;
+
+                        div.onclick = () => {
+                            document.getElementById("manual-filename").value = file;
+                            suggestionBox.style.display = "none";
+                        };
+
+                        suggestionBox.appendChild(div);
+                    });
+
+                    suggestionBox.style.display = "block";
+                });
+        }
+
+        function requestFile() {
+            let manual = document.getElementById("manual-filename").value.trim();
+            let selected = document.getElementById("filename-select").value;
+
+            let filename = manual !== "" ? manual : selected;
+
+            window.location.href = `/view/${filename}`;
+        }
+        </script>
+
+
     </div>
 
 </body>

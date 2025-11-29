@@ -74,7 +74,8 @@ def index():
 
         # --- Retrieve ---
         elif action == "request":
-            filename = request.form.get("filename")
+            filename = request.form.get("filename") or request.form.get("manual_filename")
+
             role = session.get("role")
 
             if filename:
@@ -109,10 +110,27 @@ def index():
 @app.route("/view/<filename>")
 def view_file(filename):
     file_path = os.path.join("cache", filename)
+
+    # If not in cache, try reconstructing
     if not os.path.exists(file_path):
-        return f"File {filename} not found in cache", 404
+        role = session.get("role", "student")
+        file_path = retrieve(filename, role)
+
+        if file_path is None or not os.path.exists(file_path):
+            return f"File '{filename}' not found in archive", 404
 
     return render_template("view.html", filename=filename)
+
+@app.route("/search_files")
+def search_files():
+    query = request.args.get("q", "").lower()
+    files = os.listdir("data")
+
+    # Filter matching files
+    results = [f for f in files if query in f.lower()]
+
+    return {"results": results}
+
 
 
 # ---------- SERVE FILE TO IFRAME ----------
