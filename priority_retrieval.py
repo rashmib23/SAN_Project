@@ -1,29 +1,32 @@
-
 import os
 import time
 from erasure import decode_file
 
-CACHE_DIR = "cache/"
-COLD_DIR = "cold_storage/"
+CACHE_DIR = "cache"
+COLD_DIR = "cold_storage"
+
+# Ensure cache exists
+os.makedirs(CACHE_DIR, exist_ok=True)
 
 def retrieve(filename, role):
+    cache_path = os.path.join(CACHE_DIR, filename)
+
     # Check cache first
-    if filename in os.listdir(CACHE_DIR):
+    if os.path.exists(cache_path):
         print(f"[CACHE HIT] Returned {filename} instantly")
-        return
+        return cache_path
 
     print(f"[CACHE MISS] Need reconstruction...")
 
-    chunk_dir = COLD_DIR
-
     # Priority logic
     if role.lower() in ["faculty", "admin"]:
-        delay = 0       # high priority
+        delay = 0  # high priority
     else:
-        delay = 3       # simulate slow response for students
+        delay = 3  # simulate slower response for students
 
     print(f"[PRIORITY] Role={role}, Delay={delay}s")
     time.sleep(delay)
 
-    decode_file(filename, chunk_dir, f"cache/{filename}")
+    reconstructed_file = decode_file(filename, COLD_DIR, cache_path)
     print(f"[DONE] {filename} reconstructed and cached.")
+    return reconstructed_file
